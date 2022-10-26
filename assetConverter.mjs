@@ -120,7 +120,7 @@ const optionDefinitions = [
 ]
 const options = commandLineArgs(optionDefinitions)
 
-const loadMesh = async input_path => {
+export const loadMesh = async input_path => {
   let input_mesh = null
   const ext = getFileExtension(input_path)
 
@@ -195,7 +195,7 @@ const loadMesh = async input_path => {
   return mesh
 }
 
-const exportMesh = async (output_path, input) => {
+export const exportMesh = async (output_path, input) => {
   const ext = getFileExtension(output_path)
   return new Promise((resolve, reject) => {
     const onDone = async content => {
