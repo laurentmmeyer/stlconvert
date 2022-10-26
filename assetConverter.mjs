@@ -259,14 +259,17 @@ if (!VALID_EXTS.includes(getFileExtension(output_path))) {
 }
 
 console.log(`going to convert ${input_path} to ${output_path}`)
-loadMesh(input_path)
-  .then(input_mesh => {
-    console.log("loaded mesh ", input_path)
-    return exportMesh(output_path, input_mesh)
-  })
-  .then(() => {
-    console.log("ok")
-  })
-  .catch(e => {
-    console.log("caught error", e)
-  })
+
+if (input_path && output_path) {
+  loadMesh(input_path)
+      .then(input_mesh => {
+        console.log("loaded mesh ", input_path)
+        return exportMesh(output_path, input_mesh)
+      })
+      .then(() => {
+        console.log("ok")
+      })
+      .catch(e => {
+        console.log("caught error", e)
+      })
+}
