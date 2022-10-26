@@ -18,16 +18,10 @@ It currently handles:
 - GLTF, GLB (with optional draco compression)
 
 ```bash
-node assetConverter.js  -i cacti.ply -o test.glb -c 8
-node assetConverter.js  -i test.glb -o test.obj
-node assetConverter.js  -i test.obj -o test.stl
-node assetConverter.js  -i cacti.ply -o test.gltf
-```
-
-## draco encode gltf
-
-```bash
-gltf-pipeline -i cacti.gltf -o cacti.glb -d --draco.compressionLevel 7
+node assetConverter.mjs  -i cacti.ply -o test.glb -c 8
+node assetConverter.mjs  -i test.glb -o test.obj
+node assetConverter.mjs  -i test.obj -o test.stl
+node assetConverter.mjs  -i cacti.ply -o test.gltf
 ```
 
 ## Further reading

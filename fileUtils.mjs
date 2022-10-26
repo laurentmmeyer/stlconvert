@@ -2,7 +2,7 @@
  * Gets the file (not including ".") from the path
  * @param {*} filePath
  */
-exports.getFileExtension = path => {
+const getFileExtension = path => {
   if (!path || typeof 'path' != 'string') {
     return ''
   }
@@ -14,7 +14,7 @@ exports.getFileExtension = path => {
  * Gets the extension (not including the '.') from the path
  * @param {*} filePath
  */
-exports.getFileNameFromPath = path => {
+const getFileNameFromPath = path => {
   if (!path || typeof 'path' != 'string') {
     return ''
   }
@@ -28,3 +28,6 @@ exports.getFileNameFromPath = path => {
   )
   return fileName
 }
+
+
+export {getFileNameFromPath, getFileExtension}

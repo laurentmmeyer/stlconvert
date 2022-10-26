@@ -13,13 +13,15 @@
 // limitations under the License.
 //
 "use strict"
+import {createDecoderModule} from "draco3dgltf";
+import THREE from "three";
 
-const decoder = require("draco3dgltf").createDecoderModule()
+const decoder = createDecoderModule()
 
 /**
  * @param {THREE.LoadingManager} manager
  */
-module.exports = THREE.DRACOLoader = function(manager) {
+export const DRACOLoader = function(manager) {
   this.timeLoaded = 0
   this.manager = manager || THREE.DefaultLoadingManager
   this.materials = null
@@ -35,7 +37,7 @@ module.exports = THREE.DRACOLoader = function(manager) {
   }
 }
 
-THREE.DRACOLoader.prototype = {
+DRACOLoader.prototype = {
   constructor: THREE.DRACOLoader,
 
   load: function(url, onLoad, onProgress, onError) {

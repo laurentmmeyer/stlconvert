@@ -2,22 +2,53 @@
  * source inspiration:
  * https://gist.github.com/donmccurdy/9f094575c1f1a48a2ddda513898f6496
  */
-const fs = require("fs")
-const path = require("path")
+import fs from "fs";
 
-const gltfPipeline = require("gltf-pipeline")
-const commandLineArgs = require("command-line-args")
+import path from "path";
 
+import gltfPipeline from "gltf-pipeline";
+
+import commandLineArgs from "command-line-args";
 // fix XMLHttpRequest and document issues for three.js on node
 // var XMLHttpRequest = require("xhr2")
 // global.XMLHttpRequest = XMLHttpRequest
 
-const atob = require("atob")
-const { Blob, FileReader } = require("vblob")
-const { Image } = require("image-js")
-const THREE = require("three")
+import atob from "atob";
+
+import {Blob, FileReader} from "vblob";
+
+import {Image} from "image-js";
+
+import THREE from "three";
+
+import {GLTFExporter} from "./gltfexporter.js";
+import {STLLoader} from "./stlloader.js";
+import {DRACOLoader} from "./NodeDRACOLoader.js";
 
 // Patch global scope to imitate browser environment.
+
+// requires will add these to the THREE namespace
+
+
+
+import {TextDecoder as TextDecoder0} from "util";
+
+
+THREE.GLTFExporter = GLTFExporter
+THREE.STLLoader = STLLoader
+THREE.DRACOLoader = DRACOLoader
+
+// Custom-built version of DRACOLoader, for Node.js.
+
+
+import {getFileNameFromPath, getFileExtension} from "./fileUtils.mjs";
+
+
+
+/**
+ * @param {THREE.LoadingManager} manager
+ */
+
 global.atob = atob
 global.window = global
 global.Blob = Blob
@@ -65,22 +96,7 @@ const trimBuffer = buffer =>
 
 // GLTFLoader is more efficient with access to a TextDecoder instance, which is
 // in the global namespace in the browser.
-global.TextDecoder = require("util").TextDecoder
-
-// requires will add these to the THREE namespace
-require("three/examples/js/loaders/STLLoader")
-require("three/examples/js/loaders/PLYLoader")
-require("three/examples/js/loaders/OBJLoader")
-require("three/examples/js/loaders/MTLLoader")
-require("three/examples/js/loaders/GLTFLoader")
-require("three/examples/js/exporters/STLExporter")
-require("three/examples/js/exporters/OBJExporter")
-require("three/examples/js/exporters/PLYExporter")
-require("three/examples/js/exporters/GLTFExporter")
-
-// Custom-built version of DRACOLoader, for Node.js.
-const NodeDRACOLoader = require("./NodeDRACOLoader.js")
-
+global.TextDecoder = TextDecoder0.TextDecoder
 // GLTFLoader prefetches the decoder module, when Draco is needed, to speed up
 // parsing later. This isn't necessary for our custom decoder, so set the
 // method to a no-op.
@@ -102,14 +118,11 @@ const optionDefinitions = [
     default: 0
   }
 ]
-
-const fileUtils = require("./fileUtils")
-
 const options = commandLineArgs(optionDefinitions)
 
 const loadMesh = async input_path => {
   let input_mesh = null
-  const ext = fileUtils.getFileExtension(input_path)
+  const ext = getFileExtension(input_path)
 
   let loader = null
   var mesh = null
@@ -183,7 +196,7 @@ const loadMesh = async input_path => {
 }
 
 const exportMesh = async (output_path, input) => {
-  const ext = fileUtils.getFileExtension(output_path)
+  const ext = getFileExtension(output_path)
   return new Promise((resolve, reject) => {
     const onDone = async content => {
       console.log("onDone got content")
@@ -235,14 +248,14 @@ const exportMesh = async (output_path, input) => {
 let input_path = options["input"]
 let output_path = options["output"]
 
-if (!VALID_EXTS.includes(fileUtils.getFileExtension(input_path))) {
+if (!VALID_EXTS.includes(getFileExtension(input_path))) {
   console.error(`${input_path} is not a valid extension`)
-  return -1
+  // return -1
 }
 
-if (!VALID_EXTS.includes(fileUtils.getFileExtension(output_path))) {
+if (!VALID_EXTS.includes(getFileExtension(output_path))) {
   console.error(`${output_path} is not a valid extension`)
-  return -1
+  // return -1
 }
 
 console.log(`going to convert ${input_path} to ${output_path}`)
