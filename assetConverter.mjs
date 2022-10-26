@@ -31,9 +31,6 @@ import {DRACOLoader} from "./NodeDRACOLoader.js";
 
 
 
-import {TextDecoder as TextDecoder0} from "util";
-
-
 THREE.GLTFExporter = GLTFExporter
 THREE.STLLoader = STLLoader
 THREE.DRACOLoader = DRACOLoader
@@ -96,7 +93,7 @@ const trimBuffer = buffer =>
 
 // GLTFLoader is more efficient with access to a TextDecoder instance, which is
 // in the global namespace in the browser.
-global.TextDecoder = TextDecoder0.TextDecoder
+global.TextDecoder = TextDecoder
 // GLTFLoader prefetches the decoder module, when Draco is needed, to speed up
 // parsing later. This isn't necessary for our custom decoder, so set the
 // method to a no-op.
@@ -180,7 +177,7 @@ export const loadMesh = async input_path => {
       loader = new THREE.PLYLoader()
     } else if (ext == "obj") {
       loader = new THREE.OBJLoader()
-      mtlLoader = new THREE.MTLLoader()
+      let mtlLoader = new THREE.MTLLoader()
       let mtlPath = options.material
       if (mtlPath) {
         let mtlBin = fs.readFileSync(mtlPath, "binary")
